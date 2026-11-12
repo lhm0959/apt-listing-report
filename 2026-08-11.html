@@ -143,7 +143,35 @@ a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
   .analysis table{display:block;overflow-x:auto}
 }
 @media (max-width:420px){ .panels{grid-template-columns:1fr} .stat{flex:1 1 calc(50% - 6px)} }
-</style></head><body><div class="wrap">
+</style></head><body><div class="wrap"><!--today-nav--><style>
+.todaynav{display:flex;justify-content:flex-end;margin:0 0 14px}
+.todaynav button{font:600 13px/1 -apple-system,"Apple SD Gothic Neo",system-ui,sans-serif;padding:9px 15px;border-radius:99px;border:1px solid #2f5fd0;background:#2f5fd0;color:#fff;cursor:pointer}
+.todaynav button:disabled{background:transparent;color:#78736c;border-color:#e6e2dc;cursor:default}
+@media(prefers-color-scheme:dark){.todaynav button{background:#8fb0ff;border-color:#8fb0ff;color:#161513}.todaynav button:disabled{background:transparent;color:#95908a;border-color:#2c2a27}}
+</style><nav class="todaynav"><button type="button" id="todaynav-btn">오늘 날짜로 가기</button></nav>
+<script>(function () {
+function todayKST(now = new Date()) {
+  return new Date(now.getTime() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+}
+function pickTarget(today, dates) {
+  const past = dates.filter((d) => d <= today).sort();
+  return past.length ? past[past.length - 1] : null;
+}
+var btn = document.getElementById('todaynav-btn');
+if ("2026-08-11" === todayKST()) { btn.disabled = true; btn.textContent = '오늘 리포트 보는 중'; return; }
+btn.addEventListener('click', function () {
+  btn.disabled = true;
+  var today = todayKST();
+  fetch('index.html', { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.text() : ''; })
+    .then(function (t) {
+      var dates = (t.match(/href="\d{4}-\d{2}-\d{2}\.html"/g) || []).map(function (s) { return s.slice(6, 16); });
+      return pickTarget(today, dates) || today;
+    })
+    .catch(function () { return today; })
+    .then(function (d) { location.href = d + '.html'; });
+});
+})();</script><!--/today-nav-->
 <h1>매물 리포트</h1>
 <div class="meta">2026-08-11 · 직전 2026-08-10 대비 · 전용 80~95㎡ · 가격 상한 없음</div>
 

@@ -2,5 +2,33 @@
 <style>body{font:15px/1.7 -apple-system,"Apple SD Gothic Neo",system-ui,sans-serif;max-width:520px;margin:60px auto;padding:0 20px;background:#fbfaf8;color:#1c1b19}
 @media(prefers-color-scheme:dark){body{background:#161513;color:#eceae6}}
 h1{font-size:22px}a{color:#2f5fd0;text-decoration:none;display:block;padding:10px 0;border-bottom:1px solid #e6e2dc}
-@media(prefers-color-scheme:dark){a{color:#8fb0ff;border-color:#2c2a27}}</style></head><body>
+@media(prefers-color-scheme:dark){a{color:#8fb0ff;border-color:#2c2a27}}</style></head><body><!--today-nav--><style>
+.todaynav{display:flex;justify-content:flex-end;margin:0 0 14px}
+.todaynav button{font:600 13px/1 -apple-system,"Apple SD Gothic Neo",system-ui,sans-serif;padding:9px 15px;border-radius:99px;border:1px solid #2f5fd0;background:#2f5fd0;color:#fff;cursor:pointer}
+.todaynav button:disabled{background:transparent;color:#78736c;border-color:#e6e2dc;cursor:default}
+@media(prefers-color-scheme:dark){.todaynav button{background:#8fb0ff;border-color:#8fb0ff;color:#161513}.todaynav button:disabled{background:transparent;color:#95908a;border-color:#2c2a27}}
+</style><nav class="todaynav"><button type="button" id="todaynav-btn">오늘 날짜로 가기</button></nav>
+<script>(function () {
+function todayKST(now = new Date()) {
+  return new Date(now.getTime() + 9 * 3600 * 1000).toISOString().slice(0, 10);
+}
+function pickTarget(today, dates) {
+  const past = dates.filter((d) => d <= today).sort();
+  return past.length ? past[past.length - 1] : null;
+}
+var btn = document.getElementById('todaynav-btn');
+if ("" === todayKST()) { btn.disabled = true; btn.textContent = '오늘 리포트 보는 중'; return; }
+btn.addEventListener('click', function () {
+  btn.disabled = true;
+  var today = todayKST();
+  fetch('index.html', { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.text() : ''; })
+    .then(function (t) {
+      var dates = (t.match(/href="\d{4}-\d{2}-\d{2}\.html"/g) || []).map(function (s) { return s.slice(6, 16); });
+      return pickTarget(today, dates) || today;
+    })
+    .catch(function () { return today; })
+    .then(function (d) { location.href = d + '.html'; });
+});
+})();</script><!--/today-nav-->
 <h1>매물 리포트</h1><a href="2026-11-12.html">2026-11-12</a><a href="2026-11-10.html">2026-11-10</a><a href="2026-11-09.html">2026-11-09</a><a href="2026-11-08.html">2026-11-08</a><a href="2026-11-07.html">2026-11-07</a><a href="2026-11-06.html">2026-11-06</a><a href="2026-11-05.html">2026-11-05</a><a href="2026-11-04.html">2026-11-04</a><a href="2026-11-03.html">2026-11-03</a><a href="2026-11-02.html">2026-11-02</a><a href="2026-11-01.html">2026-11-01</a><a href="2026-10-31.html">2026-10-31</a><a href="2026-10-30.html">2026-10-30</a><a href="2026-10-29.html">2026-10-29</a><a href="2026-10-28.html">2026-10-28</a><a href="2026-10-27.html">2026-10-27</a><a href="2026-10-26.html">2026-10-26</a><a href="2026-10-25.html">2026-10-25</a><a href="2026-10-24.html">2026-10-24</a><a href="2026-10-23.html">2026-10-23</a><a href="2026-10-22.html">2026-10-22</a><a href="2026-10-21.html">2026-10-21</a><a href="2026-10-20.html">2026-10-20</a><a href="2026-10-19.html">2026-10-19</a><a href="2026-10-18.html">2026-10-18</a><a href="2026-10-17.html">2026-10-17</a><a href="2026-10-16.html">2026-10-16</a><a href="2026-10-15.html">2026-10-15</a><a href="2026-10-14.html">2026-10-14</a><a href="2026-10-13.html">2026-10-13</a><a href="2026-10-12.html">2026-10-12</a><a href="2026-10-11.html">2026-10-11</a><a href="2026-10-10.html">2026-10-10</a><a href="2026-10-09.html">2026-10-09</a><a href="2026-10-08.html">2026-10-08</a><a href="2026-10-07.html">2026-10-07</a><a href="2026-10-06.html">2026-10-06</a><a href="2026-10-05.html">2026-10-05</a><a href="2026-10-04.html">2026-10-04</a><a href="2026-10-03.html">2026-10-03</a><a href="2026-10-02.html">2026-10-02</a><a href="2026-10-01.html">2026-10-01</a><a href="2026-09-10.html">2026-09-10</a><a href="2026-09-09.html">2026-09-09</a><a href="2026-09-08.html">2026-09-08</a><a href="2026-09-07.html">2026-09-07</a><a href="2026-09-06.html">2026-09-06</a><a href="2026-09-05.html">2026-09-05</a><a href="2026-09-04.html">2026-09-04</a><a href="2026-09-03.html">2026-09-03</a><a href="2026-09-02.html">2026-09-02</a><a href="2026-09-01.html">2026-09-01</a><a href="2026-08-31.html">2026-08-31</a><a href="2026-08-30.html">2026-08-30</a><a href="2026-08-29.html">2026-08-29</a><a href="2026-08-28.html">2026-08-28</a><a href="2026-08-27.html">2026-08-27</a><a href="2026-08-26.html">2026-08-26</a><a href="2026-08-25.html">2026-08-25</a><a href="2026-08-24.html">2026-08-24</a><a href="2026-08-23.html">2026-08-23</a><a href="2026-08-22.html">2026-08-22</a><a href="2026-08-21.html">2026-08-21</a><a href="2026-08-20.html">2026-08-20</a><a href="2026-08-19.html">2026-08-19</a><a href="2026-08-18.html">2026-08-18</a><a href="2026-08-17.html">2026-08-17</a><a href="2026-08-16.html">2026-08-16</a><a href="2026-08-15.html">2026-08-15</a><a href="2026-08-14.html">2026-08-14</a><a href="2026-08-13.html">2026-08-13</a><a href="2026-08-12.html">2026-08-12</a><a href="2026-08-11.html">2026-08-11</a><a href="2026-08-10.html">2026-08-10</a><a href="2026-08-09.html">2026-08-09</a></body></html>
