@@ -10,10 +10,20 @@ body{margin:0;padding:28px 20px 60px;background:var(--bg);color:var(--fg);
 .wrap{max-width:1080px;margin:0 auto}
 h1{font-size:26px;margin:0 0 4px;letter-spacing:-.02em}
 .meta{color:var(--mut);font-size:13px;margin-bottom:22px}
-.sum{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:88px}
-.stat b{display:block;font-size:21px;letter-spacing:-.02em}
-.stat span{color:var(--mut);font-size:12px}
+.kpis{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 16px;margin:0 0 22px;font-size:13.5px;line-height:1.7}
+.kpis>div+div{border-top:1px solid var(--line);margin-top:6px;padding-top:6px}
+.kpis .kl{display:inline-block;min-width:66px;color:var(--mut);font-size:12px;margin-right:6px}
+.kpis b{font-variant-numeric:tabular-nums}
+.fold{margin:34px 0 0}
+.fold>summary{cursor:pointer;list-style:none;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:12px}
+.fold>summary::-webkit-details-marker{display:none}
+.fold>summary h2{margin:0}
+.fold>summary .sub{display:inline;color:var(--acc)}
+.hscroll{overflow-x:auto;background:var(--card);border:1px solid var(--line);border-radius:12px}
+.an{margin-top:10px;border-top:1px solid var(--line);padding-top:8px}
+.an>summary{cursor:pointer;font-size:13px;color:var(--acc);list-style:none}
+.an>summary::-webkit-details-marker{display:none}
+.an .analysis{border:0;background:none;padding:2px 0 0}
 h2{font-size:15px;text-transform:uppercase;letter-spacing:.08em;color:var(--mut);margin:34px 0 12px;font-weight:600}
 table{width:100%;border-collapse:collapse;font-size:14px}
 th{text-align:left;font-weight:600;color:var(--mut);font-size:12px;padding:8px 10px;border-bottom:1px solid var(--line)}
@@ -35,6 +45,10 @@ a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
 .card{background:var(--card);border:1px solid var(--line);border-radius:12px;margin-bottom:10px;overflow:hidden}
 .card summary{padding:13px 16px;cursor:pointer;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
 .card summary .sub{display:inline;flex:1}
+.card>summary{list-style:none}.card>summary::-webkit-details-marker{display:none}
+.card>summary::before{content:'▸';color:var(--mut);font-size:11px;margin-right:-4px}
+.card[open]>summary::before{content:'▾'}
+.mkt th,.mkt td:first-child{white-space:nowrap}
 .pill{font-variant-numeric:tabular-nums;font-weight:600;background:var(--bg);border:1px solid var(--line);border-radius:99px;padding:2px 10px;font-size:13px}
 .items{font-size:13px}.items td,.items th{padding:7px 16px}
 .items tr.tenant{opacity:.45}
@@ -111,9 +125,8 @@ a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
 @media (max-width:760px){
   body{padding:18px 12px 48px;font-size:14px}
   h1{font-size:21px}
-  .sum{gap:6px}
-  .stat{flex:1 1 calc(33% - 6px);min-width:0;padding:8px 10px}
-  .stat b{font-size:18px}
+  .kpis{padding:8px 12px;font-size:13px}
+  .kpis .kl{display:block;min-width:0}
   .overflow{border:0;background:none;border-radius:0}
   /* 표 → 블록 스택 */
   table thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
@@ -133,7 +146,9 @@ a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
   .deals{gap:12px;margin:2px 12px 6px;padding:8px 12px}
   .deals .sub2{margin-left:0;flex-basis:100%}
   .dl b{font-size:14px}
-  .card summary{padding:11px 12px}
+  .card summary{padding:11px 12px;row-gap:4px}
+  .card summary .sub{flex:0 1 auto;white-space:nowrap}
+  .card summary .pill{margin-left:auto}
   .cmeta{padding:0 12px 2px}
   .items td,.items th{padding:3px 0}
   .brief{padding:12px 14px 14px;margin-bottom:22px}
@@ -145,9 +160,15 @@ a{color:var(--acc);text-decoration:none}a:hover{text-decoration:underline}
   .panel{padding:10px 11px}
   .pv{font-size:16px}
   .analysis{padding:4px 14px 14px}
+  .an .analysis{padding:2px 0 0}
   .analysis table{display:block;overflow-x:auto}
+  /* 시장 온도 상세는 카드로 쌓지 않고 가로 스크롤 표로 둔다 (17행 카드는 5,000px가 넘는다) */
+  .hscroll .mkt thead{position:static;width:auto;height:auto;overflow:visible;clip:auto}
+  .mkt td[data-l]::before{content:none}
+  .mkt th,.mkt td{padding:6px 8px;font-size:12px}
+  .mkt .sub{display:block;margin-left:0}
 }
-@media (max-width:420px){ .panels{grid-template-columns:1fr} .stat{flex:1 1 calc(50% - 6px)} }
+@media (max-width:420px){ .panels{grid-template-columns:1fr} }
 </style></head><body><div class="wrap"><!--today-nav--><style>
 .todaynav{display:flex;justify-content:flex-end;margin:0 0 14px}
 .todaynav button{font:600 13px/1 -apple-system,"Apple SD Gothic Neo",system-ui,sans-serif;padding:9px 15px;border-radius:99px;border:1px solid #2f5fd0;background:#2f5fd0;color:#fff;cursor:pointer}
@@ -180,12 +201,9 @@ btn.addEventListener('click', function () {
 <h1>매물 리포트</h1>
 <div class="meta">2026-11-17 · 직전 2026-11-16 대비 · 전용 80~95㎡ (예외 벽산타운1단지·무지개12단지주공·용인수지벽산타운2단지·벽산타운3단지·벽산타운4단지 95㎡ 이하) · 3층 이상 · 가격 상한 없음</div>
 
-<div class="sum">
-  <div class="stat"><b>12</b><span>신규</span></div>
-  <div class="stat"><b>8</b><span>가격 하향</span></div>
-  <div class="stat"><b>3</b><span>가격 상향</span></div>
-  <div class="stat"><b>5</b><span>매물 소멸</span></div>
-  <div class="stat"><b>20</b><span>12억 이하 단지</span></div>
+<div class="kpis">
+  <div><span class="kl">오늘 변동</span>신규 <b>12</b> · 하향 <b>8</b> · 상향 <b>3</b> · 소멸 <b>5</b> · 12억 이하 <b>20</b>단지</div>
+  <div><span class="kl">시장</span>수지 매물 <b>3,660</b> (7일 +2.4%) · 관심 단지 호가 하향 <b>25</b> / 상향 <b>12</b> (6일) · 9월 거래 <b>301</b>건 (완결) · 10월 455건 (잠정) · 하락거래 38% · 소진 <b>8.5</b>개월 · <a href="#market" onclick="document.getElementById('market').open=true">동별 상세 ↓</a></div>
 </div>
 
 <section class="brief trig">
@@ -197,189 +215,8 @@ btn.addEventListener('click', function () {
 <section class="brief">
   <h2 class="bh">핵심 요약</h2>
   <ul><li>수지구 매물 3,660건(7일 +2.4%)에 최근 6일 호가 하향 25건 / 상향 12건으로 '매물↑·호가↓' 하락 진행 구간이라 서두를 이유가 없고, 10월 455건은 잠정치이며 9월 완결 301건 기준 소진은 8.5개월이다.</li><li>관심 단지 중 벽산타운4단지(신분당 도보)는 최저호가가 12억 2,000(10-18)→10억 6,000으로 1.6억 내려 전고점 10억 9,000 대비 -0.3억, 최근 실거래 10억 5,500(10.29)과 500만 원 차이까지 붙었다.</li><li>동천디이스트(신분당 도보) 108 510동 저/24 남동향 12억 3,000은 전고점 13억 2,000 대비 -0.9억이고 최근 실거래 12억 4,700(10.30)보다 1,700만 원 낮은 호가다.</li><li>힐스테이트광교산(신분당 버스) 110 102동 저/20 9억 4,000도 최근 실거래 9억 6,000(09.28)보다 2,000만 원 낮지만, 두 매물 모두 저층이라 실거래와 층을 맞춰 비교해야 한다.</li><li>주의: 동성1차는 호가 12억 3,000이 최근 실거래 10억 3,000(10.03)보다 2억 높고 매물이 1건뿐이며, 벽산타운3단지(+0.5억)·현암마을동성2차(+0.55억)도 호가가 전고점 위라 가격 기준으로 삼기 어렵다.</li></ul>
+  
 </section>
-
-<h2>시장 온도 — 매매</h2>
-<div class="meta" style="margin-top:-6px">관심 단지 실거주 매물 합계 <b>1,269</b>건(중복 포함, 7일 +5.8%) <span class="ispark"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,22.0 3.214285714285714,22.0 6.428571428571428,19.4 9.642857142857142,16.8 12.857142857142856,14.9 16.071428571428573,14.2 19.285714285714285,10.4 22.5,10.2 25.71428571428571,9.2 28.92857142857143,8.3 32.142857142857146,10.2 35.357142857142854,11.3 38.57142857142857,13.4 41.785714285714285,15.2 45,17.6 48.214285714285715,14.7 51.42857142857142,12.8 54.64285714285714,12.5 57.85714285714286,10.7 61.07142857142858,12.1 64.28571428571429,11.3 67.5,14.7 70.71428571428571,12.5 73.92857142857143,6.3 77.14285714285714,3.4 80.35714285714286,0.0 83.57142857142857,0.3 86.78571428571429,8.7 90,1.3"/></svg></span>
- · 호가 하향 25 / 상향 12 (최근 6일)</div>
-<div class="overflow"><table class="mkt">
-<thead><tr><th>동</th><th>매물</th><th>7일</th><th>30일</th><th>30일 추이</th><th>10월 거래 (잠정)</th><th>9월 완결</th><th>하락거래</th><th>소진</th></tr></thead>
-<tbody><tr class="tot">
-    <td>수지구</td>
-    <td class="num" data-l="매물">3,660</td>
-    <td class="num" data-l="7일">+2.4%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,13.8 5.625,16.9 11.25,22.0 16.875,21.3 22.5,13.0 28.125,10.2 33.75,12.0 39.375,5.8 45,6.6 50.625,9.0 56.25,14.5 61.875,1.7 67.5,3.1 73.125,0.5 78.75,0.0 84.375,4.1 90,4.4"/></svg></td>
-    <td class="num" data-l="10월 거래">455건</td>
-    <td class="num" data-l="9월 완결">301건</td>
-    <td class="num" data-l="하락거래">38%</td>
-    <td class="num" data-l="소진">8.5개월</td>
-  </tr><tr class="">
-    <td>풍덕천동</td>
-    <td class="num" data-l="매물">692</td>
-    <td class="num" data-l="7일">+0.9%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,16.5 5.625,17.3 11.25,22.0 16.875,22.0 22.5,14.0 28.125,13.1 33.75,17.3 39.375,6.3 45,3.0 50.625,2.5 56.25,9.3 61.875,0.8 67.5,5.9 73.125,1.7 78.75,0.0 84.375,3.0 90,6.8"/></svg></td>
-    <td class="num" data-l="10월 거래">116건</td>
-    <td class="num" data-l="9월 완결">70건</td>
-    <td class="num" data-l="하락거래">39%</td>
-    <td class="num" data-l="소진">7.8개월</td>
-  </tr><tr class="">
-    <td>죽전동</td>
-    <td class="num" data-l="매물">599</td>
-    <td class="num" data-l="7일">+1%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,9.1 5.625,15.9 11.25,22.0 16.875,21.2 22.5,14.4 28.125,11.4 33.75,8.3 39.375,5.3 45,5.3 50.625,6.1 56.25,5.3 61.875,9.1 67.5,4.6 73.125,0.0 78.75,4.6 84.375,7.6 90,0.8"/></svg></td>
-    <td class="num" data-l="10월 거래">93건</td>
-    <td class="num" data-l="9월 완결">48건</td>
-    <td class="num" data-l="하락거래">30%</td>
-    <td class="num" data-l="소진">7.9개월</td>
-  </tr><tr class="">
-    <td>동천동</td>
-    <td class="num" data-l="매물">474</td>
-    <td class="num" data-l="7일">+4.9%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,17.9 5.625,19.6 11.25,22.0 16.875,22.0 22.5,18.7 28.125,16.3 33.75,8.1 39.375,4.1 45,6.5 50.625,9.0 56.25,20.4 61.875,2.4 67.5,0.0 73.125,0.0 78.75,0.0 84.375,4.1 90,2.4"/></svg></td>
-    <td class="num" data-l="10월 거래">58건</td>
-    <td class="num" data-l="9월 완결">38건</td>
-    <td class="num" data-l="하락거래">47%</td>
-    <td class="num" data-l="소진">8.6개월</td>
-  </tr><tr class="">
-    <td>고기동</td>
-    <td class="num" data-l="매물">0</td>
-    <td class="num" data-l="7일">—</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,22.0 5.625,22.0 11.25,22.0 16.875,22.0 22.5,22.0 28.125,22.0 33.75,22.0 39.375,22.0 45,22.0 50.625,22.0 56.25,22.0 61.875,22.0 67.5,22.0 73.125,22.0 78.75,22.0 84.375,22.0 90,22.0"/></svg></td>
-    <td class="num" data-l="10월 거래">0건</td>
-    <td class="num" data-l="9월 완결">0건</td>
-    <td class="num" data-l="하락거래">—</td>
-    <td class="num" data-l="소진">—</td>
-  </tr><tr class="">
-    <td>신봉동</td>
-    <td class="num" data-l="매물">354</td>
-    <td class="num" data-l="7일">-0.8%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,0.0 5.625,9.3 11.25,13.9 16.875,12.7 22.5,8.1 28.125,5.8 33.75,9.3 39.375,5.8 45,6.9 50.625,10.4 56.25,18.5 61.875,6.9 67.5,9.3 73.125,9.3 78.75,13.9 84.375,19.7 90,22.0"/></svg></td>
-    <td class="num" data-l="10월 거래">32건</td>
-    <td class="num" data-l="9월 완결">31건</td>
-    <td class="num" data-l="하락거래">36%</td>
-    <td class="num" data-l="소진">9개월</td>
-  </tr><tr class="">
-    <td>성복동</td>
-    <td class="num" data-l="매물">710</td>
-    <td class="num" data-l="7일">+0.7%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,13.6 5.625,12.6 11.25,21.0 16.875,22.0 22.5,7.3 28.125,4.2 33.75,17.8 39.375,4.2 45,3.1 50.625,8.4 56.25,18.9 61.875,1.0 67.5,5.2 73.125,4.2 78.75,0.0 84.375,6.3 90,13.6"/></svg></td>
-    <td class="num" data-l="10월 거래">66건</td>
-    <td class="num" data-l="9월 완결">49건</td>
-    <td class="num" data-l="하락거래">37%</td>
-    <td class="num" data-l="소진">11개월</td>
-  </tr><tr class="">
-    <td>상현동</td>
-    <td class="num" data-l="매물">831</td>
-    <td class="num" data-l="7일">+6.5%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,16.5 5.625,18.8 11.25,22.0 16.875,20.4 22.5,13.3 28.125,10.0 33.75,11.3 39.375,10.4 45,14.2 50.625,17.5 56.25,17.8 61.875,2.9 67.5,3.9 73.125,1.9 78.75,0.0 84.375,2.6 90,1.3"/></svg></td>
-    <td class="num" data-l="10월 거래">90건</td>
-    <td class="num" data-l="9월 완결">65건</td>
-    <td class="num" data-l="하락거래">40%</td>
-    <td class="num" data-l="소진">7.7개월</td>
-  </tr>
-<tr class="grp"><td colspan="9">성남 — 관심 동만 (구 합계 없음)</td></tr><tr class="">
-    <td>신흥동</td>
-    <td class="num" data-l="매물">631</td>
-    <td class="num" data-l="7일">0%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,14.9 5.625,15.1 11.25,22.0 16.875,18.3 22.5,10.6 28.125,7.4 33.75,9.7 39.375,6.0 45,3.1 50.625,3.7 56.25,2.9 61.875,0.9 67.5,0.0 73.125,3.4 78.75,0.0 84.375,2.9 90,2.9"/></svg></td>
-    <td class="num" data-l="10월 거래">32건</td>
-    <td class="num" data-l="9월 완결">23건</td>
-    <td class="num" data-l="하락거래">48%</td>
-    <td class="num" data-l="소진">18.2개월</td>
-  </tr><tr class="">
-    <td>태평동</td>
-    <td class="num" data-l="매물">101</td>
-    <td class="num" data-l="7일">+4.1%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,7.3 5.625,11.0 11.25,20.2 16.875,5.5 22.5,0.0 28.125,9.2 33.75,18.3 39.375,11.0 45,5.5 50.625,5.5 56.25,22.0 61.875,14.7 67.5,12.8 73.125,7.3 78.75,14.7 84.375,20.2 90,14.7"/></svg></td>
-    <td class="num" data-l="10월 거래">5건</td>
-    <td class="num" data-l="9월 완결">12건</td>
-    <td class="num" data-l="하락거래">33%</td>
-    <td class="num" data-l="소진">12.1개월</td>
-  </tr><tr class="">
-    <td>수진동</td>
-    <td class="num" data-l="매물">31</td>
-    <td class="num" data-l="7일">-3.1%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,16.5 5.625,16.5 11.25,22.0 16.875,16.5 22.5,0.0 28.125,0.0 33.75,16.5 39.375,5.5 45,16.5 50.625,16.5 56.25,5.5 61.875,16.5 67.5,5.5 73.125,5.5 78.75,16.5 84.375,22.0 90,11.0"/></svg></td>
-    <td class="num" data-l="10월 거래">4건</td>
-    <td class="num" data-l="9월 완결">3건</td>
-    <td class="num" data-l="하락거래">0%</td>
-    <td class="num" data-l="소진">4.6개월</td>
-  </tr><tr class="">
-    <td>산성동</td>
-    <td class="num" data-l="매물">0</td>
-    <td class="num" data-l="7일">—</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,22.0 5.625,22.0 11.25,22.0 16.875,22.0 22.5,22.0 28.125,22.0 33.75,22.0 39.375,22.0 45,22.0 50.625,22.0 56.25,22.0 61.875,22.0 67.5,22.0 73.125,22.0 78.75,22.0 84.375,22.0 90,22.0"/></svg></td>
-    <td class="num" data-l="10월 거래">0건</td>
-    <td class="num" data-l="9월 완결">0건</td>
-    <td class="num" data-l="하락거래">—</td>
-    <td class="num" data-l="소진">—</td>
-  </tr><tr class="">
-    <td>고등동</td>
-    <td class="num" data-l="매물">104</td>
-    <td class="num" data-l="7일">+1%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,6.3 5.625,12.6 11.25,18.9 16.875,22.0 22.5,18.9 28.125,12.6 33.75,12.6 39.375,6.3 45,12.6 50.625,12.6 56.25,6.3 61.875,3.1 67.5,0.0 73.125,0.0 78.75,0.0 84.375,6.3 90,3.1"/></svg></td>
-    <td class="num" data-l="10월 거래">13건</td>
-    <td class="num" data-l="9월 완결">7건</td>
-    <td class="num" data-l="하락거래">43%</td>
-    <td class="num" data-l="소진">11.6개월</td>
-  </tr><tr class="">
-    <td>금광동</td>
-    <td class="num" data-l="매물">360</td>
-    <td class="num" data-l="7일">+2.3%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,18.5 5.625,20.2 11.25,22.0 16.875,16.7 22.5,7.9 28.125,20.2 33.75,16.7 39.375,3.5 45,4.4 50.625,7.9 56.25,7.0 61.875,6.2 67.5,4.4 73.125,2.6 78.75,0.9 84.375,2.6 90,0.0"/></svg></td>
-    <td class="num" data-l="10월 거래">17건</td>
-    <td class="num" data-l="9월 완결">23건</td>
-    <td class="num" data-l="하락거래">48%</td>
-    <td class="num" data-l="소진">11개월</td>
-  </tr><tr class="">
-    <td>도촌동</td>
-    <td class="num" data-l="매물">76</td>
-    <td class="num" data-l="7일">+4.1%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,22.0 5.625,18.0 11.25,18.0 16.875,20.0 22.5,14.0 28.125,16.0 33.75,8.0 39.375,8.0 45,8.0 50.625,8.0 56.25,6.0 61.875,4.0 67.5,6.0 73.125,6.0 78.75,8.0 84.375,10.0 90,0.0"/></svg></td>
-    <td class="num" data-l="10월 거래">7건</td>
-    <td class="num" data-l="9월 완결">11건</td>
-    <td class="num" data-l="하락거래">36%</td>
-    <td class="num" data-l="소진">10.4개월</td>
-  </tr><tr class="">
-    <td>하대원동</td>
-    <td class="num" data-l="매물">137</td>
-    <td class="num" data-l="7일">+17.1%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,11.9 5.625,16.5 11.25,22.0 16.875,11.9 22.5,10.1 28.125,10.1 33.75,12.8 39.375,19.3 45,19.3 50.625,19.3 56.25,19.3 61.875,1.8 67.5,2.8 73.125,0.0 78.75,3.7 84.375,3.7 90,0.9"/></svg></td>
-    <td class="num" data-l="10월 거래">9건</td>
-    <td class="num" data-l="9월 완결">12건</td>
-    <td class="num" data-l="하락거래">55%</td>
-    <td class="num" data-l="소진">11.1개월</td>
-  </tr><tr class="">
-    <td>중앙동</td>
-    <td class="num" data-l="매물">152</td>
-    <td class="num" data-l="7일">+4.1%</td>
-    <td class="num" data-l="30일">—</td>
-    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,19.4 5.625,18.1 11.25,22.0 16.875,14.2 22.5,11.6 28.125,11.6 33.75,11.6 39.375,6.5 45,9.1 50.625,11.6 56.25,12.9 61.875,6.5 67.5,1.3 73.125,2.6 78.75,0.0 84.375,9.1 90,5.2"/></svg></td>
-    <td class="num" data-l="10월 거래">7건</td>
-    <td class="num" data-l="9월 완결">14건</td>
-    <td class="num" data-l="하락거래">21%</td>
-    <td class="num" data-l="소진">9.5개월</td>
-  </tr></tbody></table></div>
-
-<div class="note">매물 = 네이버 매매 매물(동일매물 묶음, 아파트·재건축, 모든 평형). 거래 = 국토부 실거래, 계약일 기준, 해제 제외.
-계약 후 30일 신고 기한이 지나지 않은 달은 잠정이다. 이번 달 누적은 월초에 0에 가까워 표에서 뺐다.
-소진 = 매물 ÷ 최근 완결 3개월(9월·8월·7월) 월평균 거래. 하락거래 = 9월 거래 중 같은 단지·같은 면적의 직전 거래보다 낮은 비율.</div>
 
 <h2>추천 매물 — 관심 단지</h2>
 <div class="picks">
@@ -424,9 +261,11 @@ btn.addEventListener('click', function () {
 <div class="note">해당 타입 5년 전고점 대비가 낮은 순. 호가는 체결가가 아니다.</div>
 
 <h2>관심 단지</h2>
+<div class="meta" style="margin-top:-6px">오늘 변동이 있는 단지만 펼쳐 둔다 · 단지명을 누르면 매물 목록</div>
 
-  <details class="card pin" open>
+  <details class="card pin">
     <summary><b>동성1차</b><span class="sbd">신분당 환승</span><span class="sub">죽전동 · 684세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/2222" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">12억 3,000</span></summary>
     <div class="cmeta">고유 물건 <b>1</b>개 · 등록 1건</div>
@@ -448,8 +287,9 @@ btn.addEventListener('click', function () {
     
   </details>
 
-  <details class="card pin" open>
+  <details class="card pin">
     <summary><b>현암마을동성2차</b><span class="sbd">신분당 환승</span><span class="sub">죽전동 · 838세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/8174" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">11억 5,000</span></summary>
     <div class="cmeta">고유 물건 <b>6</b>개 · 등록 7건 (중복 묶음)</div>
@@ -501,8 +341,9 @@ btn.addEventListener('click', function () {
     
   </details>
 
-  <details class="card pin" open>
+  <details class="card pin">
     <summary><b>벽산타운1단지</b><span class="sbd">신분당 도보</span><span class="sub">죽전동 · 612세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/2223" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">조건 없음</span></summary>
     <div class="cmeta">고유 물건 <b>0</b>개 · 등록 0건</div>
@@ -518,8 +359,9 @@ btn.addEventListener('click', function () {
     
   </details>
 
-  <details class="card pin" open>
+  <details class="card pin">
     <summary><b>용인수지벽산타운2단지</b><span class="sbd">신분당 도보</span><span class="sub">죽전동 · 684세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/24290" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">10억 6,000</span></summary>
     <div class="cmeta">고유 물건 <b>9</b>개 · 등록 25건 (중복 묶음)</div>
@@ -589,8 +431,9 @@ btn.addEventListener('click', function () {
     
   </details>
 
-  <details class="card pin" open>
+  <details class="card pin">
     <summary><b>벽산타운3단지</b><span class="sbd">신분당 환승</span><span class="sub">죽전동 · 425세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/24299" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">12억</span></summary>
     <div class="cmeta">고유 물건 <b>7</b>개 · 등록 22건 (중복 묶음)</div>
@@ -648,8 +491,9 @@ btn.addEventListener('click', function () {
     
   </details>
 
-  <details class="card pin" open>
+  <details class="card pin">
     <summary><b>벽산타운4단지</b><span class="sbd">신분당 도보</span><span class="sub">죽전동 · 465세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/24301" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">10억 6,000</span></summary>
     <div class="cmeta">고유 물건 <b>3</b>개 · 등록 3건</div>
@@ -683,8 +527,9 @@ btn.addEventListener('click', function () {
     
   </details>
 
-  <details class="card pin" open>
+  <details class="card pin">
     <summary><b>동천디이스트</b><span class="sbd">신분당 도보</span><span class="sub">동천동 · 1334세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/9390" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">12억 3,000</span></summary>
     <div class="cmeta">고유 물건 <b>30</b>개 · 등록 110건 (중복 묶음)</div>
@@ -880,8 +725,9 @@ btn.addEventListener('click', function () {
     <label class="more"><input type="checkbox" class="toggle"><span class="on">나머지 20건 보기 ▾</span><span class="off">접기 ▴</span></label>
   </details>
 
-  <details class="card pin" open>
+  <details class="card pin">
     <summary><b>수지파크푸르지오</b><span class="sbd">신분당 도보</span><span class="sub">풍덕천동 · 430세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/114527" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">16억</span></summary>
     <div class="cmeta">고유 물건 <b>1</b>개 · 등록 2건 (중복 묶음)</div>
@@ -905,6 +751,7 @@ btn.addEventListener('click', function () {
 
   <details class="card pin" open>
     <summary><b>무지개12단지주공</b><span class="sbd">신분당 환승</span><span class="sub">구미동 · 905세대</span>
+      <span class="chips"><span class="chip new">신규 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/2675" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">10억 3,000</span></summary>
     <div class="cmeta">고유 물건 <b>46</b>개 · 등록 99건 (중복 묶음)</div>
@@ -1196,8 +1043,9 @@ btn.addEventListener('click', function () {
     <label class="more"><input type="checkbox" class="toggle"><span class="on">나머지 36건 보기 ▾</span><span class="off">접기 ▴</span></label>
   </details>
 
-  <details class="card pin" open>
+  <details class="card pin">
     <summary><b>힐스테이트광교산</b><span class="sbd">신분당 버스</span><span class="sub">신봉동 · 789세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/126607" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">9억 4,000</span></summary>
     <div class="cmeta">고유 물건 <b>9</b>개 · 등록 20건 (중복 묶음)</div>
@@ -1615,6 +1463,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>도담마을7단지뜨리에체</b><span class="sbd">신분당 환승</span><span class="sub">죽전동 · 430세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/2535" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">7억 3,000</span></summary>
     <div class="cmeta">고유 물건 <b>11</b>개 · 등록 19건 (중복 묶음)</div>
@@ -1698,6 +1547,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>래미안금광</b><span class="sub">금광동 · 1098세대</span>
+      <span class="chips"><span class="chip new">신규 1</span><span class="chip down">하향 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/17848" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">8억 6,000</span></summary>
     <div class="cmeta">고유 물건 <b>17</b>개 · 등록 25건 (중복 묶음)</div>
@@ -1817,6 +1667,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>내대지마을건영캐스빌</b><span class="sbd">신분당 환승</span><span class="sub">죽전동 · 1254세대</span>
+      <span class="chips"><span class="chip new">신규 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/8292" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">9억</span></summary>
     <div class="cmeta">고유 물건 <b>11</b>개 · 등록 13건 (중복 묶음)</div>
@@ -1900,6 +1751,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>성남자이</b><span class="sub">하대원동 · 910세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/18527" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">9억</span></summary>
     <div class="cmeta">고유 물건 <b>14</b>개 · 등록 30건 (중복 묶음)</div>
@@ -2001,6 +1853,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>새터마을죽전힐스테이트</b><span class="sbd">신분당 환승</span><span class="sub">죽전동 · 1998세대</span>
+      <span class="chips"><span class="chip new">신규 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/8627" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">9억 2,000</span></summary>
     <div class="cmeta">고유 물건 <b>32</b>개 · 등록 63건 (중복 묶음)</div>
@@ -2210,6 +2063,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>죽전아이뷰</b><span class="sbd">신분당 환승</span><span class="sub">죽전동 · 432세대</span>
+      <span class="chips"><span class="chip new">신규 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/8175" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">10억 5,000</span></summary>
     <div class="cmeta">고유 물건 <b>6</b>개 · 등록 12건 (중복 묶음)</div>
@@ -2263,6 +2117,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>동분당센트럴파크</b><span class="sub">도촌동 · 842세대</span>
+      <span class="chips"><span class="chip new">신규 1</span><span class="chip gone">소멸 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/102038" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">10억 8,000</span></summary>
     <div class="cmeta">고유 물건 <b>11</b>개 · 등록 16건 (중복 묶음)</div>
@@ -2346,6 +2201,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>한국</b><span class="sbd">신분당 도보</span><span class="sub">풍덕천동 · 416세대</span>
+      <span class="chips"><span class="chip down">하향 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/3741" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">11억</span></summary>
     <div class="cmeta">고유 물건 <b>22</b>개 · 등록 43건 (중복 묶음)</div>
@@ -2495,6 +2351,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>꽃메마을현대홈타운4차3단지</b><span class="sbd">신분당 환승</span><span class="sub">죽전동 · 770세대</span>
+      <span class="chips"><span class="chip new">신규 2</span><span class="chip gone">소멸 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/8727" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">11억</span></summary>
     <div class="cmeta">고유 물건 <b>16</b>개 · 등록 39건 (중복 묶음)</div>
@@ -2608,6 +2465,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>중앙힐스테이트1차</b><span class="sub">중앙동 · 356세대</span>
+      <span class="chips"><span class="chip gone">소멸 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/27075" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">11억 3,000</span></summary>
     <div class="cmeta">고유 물건 <b>3</b>개 · 등록 9건 (중복 묶음)</div>
@@ -2643,6 +2501,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>대지마을3차2단지현대홈타운</b><span class="sbd">신분당 환승</span><span class="sub">죽전동 · 537세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/8725" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">11억 5,000</span></summary>
     <div class="cmeta">고유 물건 <b>6</b>개 · 등록 7건 (중복 묶음)</div>
@@ -2696,6 +2555,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>중앙힐스테이트2차</b><span class="sub">중앙동 · 751세대</span>
+      <span class="chips"><span class="chip new">신규 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/27076" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">11억 5,000</span></summary>
     <div class="cmeta">고유 물건 <b>10</b>개 · 등록 38건 (중복 묶음)</div>
@@ -2773,6 +2633,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>한화포레나수지동천(주상복합)</b><span class="sbd">신분당 도보</span><span class="sub">동천동 · 293세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/134905" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">11억 6,000</span></summary>
     <div class="cmeta">고유 물건 <b>19</b>개 · 등록 78건 (중복 묶음)</div>
@@ -2904,6 +2765,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>신정6단지진흥</b><span class="sbd">신분당 도보</span><span class="sub">풍덕천동 · 414세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/3747" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">12억</span></summary>
     <div class="cmeta">고유 물건 <b>9</b>개 · 등록 20건 (중복 묶음)</div>
@@ -2975,6 +2837,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>동천마을현대홈타운2차</b><span class="sbd">신분당 도보</span><span class="sub">동천동 · 1128세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/3706" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">12억 2,000</span></summary>
     <div class="cmeta">고유 물건 <b>20</b>개 · 등록 38건 (중복 묶음)</div>
@@ -3112,6 +2975,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>e편한세상금빛그랑메종5단지</b><span class="sub">금광동 · 1102세대</span>
+      <span class="chips"><span class="chip down">하향 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/159781" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">12억 7,000</span></summary>
     <div class="cmeta">고유 물건 <b>16</b>개 · 등록 49건 (중복 묶음)</div>
@@ -3225,6 +3089,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>수진마을1단지써니벨리</b><span class="sbd">신분당 도보</span><span class="sub">동천동 · 627세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/8361" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">12억 8,000</span></summary>
     <div class="cmeta">고유 물건 <b>5</b>개 · 등록 5건</div>
@@ -3272,6 +3137,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>판교밸리호반써밋</b><span class="sbd">신분당 버스</span><span class="sub">고등동 · 768세대</span>
+      <span class="chips"><span class="chip new">신규 1</span><span class="chip down">하향 2</span><span class="chip up">상향 3</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/118718" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">12억 9,000</span></summary>
     <div class="cmeta">고유 물건 <b>40</b>개 · 등록 91건 (중복 묶음)</div>
@@ -3529,6 +3395,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>동천자이</b><span class="sbd">신분당 버스</span><span class="sub">동천동 · 1437세대</span>
+      <span class="chips"><span class="chip down">하향 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/112792" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">13억</span></summary>
     <div class="cmeta">고유 물건 <b>45</b>개 · 등록 246건 (중복 묶음)</div>
@@ -3816,6 +3683,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>더샵동천이스트포레</b><span class="sbd">신분당 버스</span><span class="sub">동천동 · 980세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/115644" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">13억 8,000</span></summary>
     <div class="cmeta">고유 물건 <b>18</b>개 · 등록 61건 (중복 묶음)</div>
@@ -3941,6 +3809,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>산성역자이푸르지오1단지</b><span class="sub">신흥동 · 1852세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/137596" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">15억 2,000</span></summary>
     <div class="cmeta">고유 물건 <b>6</b>개 · 등록 23건 (중복 묶음)</div>
@@ -3994,6 +3863,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>산성역포레스티아</b><span class="sub">신흥동 · 4089세대</span>
+      <span class="chips"><span class="chip new">신규 2</span><span class="chip down">하향 1</span><span class="chip gone">소멸 2</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/118771" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">16억 3,500</span></summary>
     <div class="cmeta">고유 물건 <b>36</b>개 · 등록 138건 (중복 묶음)</div>
@@ -4227,6 +4097,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>산성역헤리스톤</b><span class="sub">산성동 · 3487세대</span>
+      <span class="chips"><span class="chip down">하향 1</span></span>
       <a class="cx" href="https://new.land.naver.com/complexes/170718" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">17억 7,052</span></summary>
     <div class="cmeta">고유 물건 <b>9</b>개 · 등록 12건 (중복 묶음)</div>
@@ -4298,6 +4169,7 @@ btn.addEventListener('click', function () {
 
   <details class="card">
     <summary><b>판교밸리포레자이</b><span class="sbd">신분당 버스</span><span class="sub">고등동 · 603세대</span>
+      
       <a class="cx" href="https://new.land.naver.com/complexes/128970" target="_blank" rel="noopener" title="네이버 단지 페이지">단지 ↗</a>
       <span class="pill">조건 없음</span></summary>
     <div class="cmeta">고유 물건 <b>0</b>개 · 등록 0건</div>
@@ -5532,7 +5404,188 @@ btn.addEventListener('click', function () {
         <div class="pv">—</div>
         <div class="empty">관측 0회 · 추이는 2회차부터</div></figure></div>
 
+<details class="fold" id="market"><summary><h2>시장 온도 — 동별 상세</h2><span class="sub">수지 7개 동 + 성남 관심 동 · 매물·거래·소진 ▾</span></summary>
+<div class="meta">관심 단지 실거주 매물 합계 <b>1,269</b>건(중복 포함, 7일 +5.8%) <span class="ispark"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,22.0 3.214285714285714,22.0 6.428571428571428,19.4 9.642857142857142,16.8 12.857142857142856,14.9 16.071428571428573,14.2 19.285714285714285,10.4 22.5,10.2 25.71428571428571,9.2 28.92857142857143,8.3 32.142857142857146,10.2 35.357142857142854,11.3 38.57142857142857,13.4 41.785714285714285,15.2 45,17.6 48.214285714285715,14.7 51.42857142857142,12.8 54.64285714285714,12.5 57.85714285714286,10.7 61.07142857142858,12.1 64.28571428571429,11.3 67.5,14.7 70.71428571428571,12.5 73.92857142857143,6.3 77.14285714285714,3.4 80.35714285714286,0.0 83.57142857142857,0.3 86.78571428571429,8.7 90,1.3"/></svg></span>
+ · 호가 하향 25 / 상향 12 (최근 6일)</div>
+<div class="hscroll"><table class="mkt">
+<thead><tr><th>동</th><th>매물</th><th>7일</th><th>30일</th><th>30일 추이</th><th>10월 거래 (잠정)</th><th>9월 완결</th><th>하락거래</th><th>소진</th></tr></thead>
+<tbody><tr class="tot">
+    <td>수지구</td>
+    <td class="num" data-l="매물">3,660</td>
+    <td class="num" data-l="7일">+2.4%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,13.8 5.625,16.9 11.25,22.0 16.875,21.3 22.5,13.0 28.125,10.2 33.75,12.0 39.375,5.8 45,6.6 50.625,9.0 56.25,14.5 61.875,1.7 67.5,3.1 73.125,0.5 78.75,0.0 84.375,4.1 90,4.4"/></svg></td>
+    <td class="num" data-l="10월 거래">455건</td>
+    <td class="num" data-l="9월 완결">301건</td>
+    <td class="num" data-l="하락거래">38%</td>
+    <td class="num" data-l="소진">8.5개월</td>
+  </tr><tr class="">
+    <td>풍덕천동</td>
+    <td class="num" data-l="매물">692</td>
+    <td class="num" data-l="7일">+0.9%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,16.5 5.625,17.3 11.25,22.0 16.875,22.0 22.5,14.0 28.125,13.1 33.75,17.3 39.375,6.3 45,3.0 50.625,2.5 56.25,9.3 61.875,0.8 67.5,5.9 73.125,1.7 78.75,0.0 84.375,3.0 90,6.8"/></svg></td>
+    <td class="num" data-l="10월 거래">116건</td>
+    <td class="num" data-l="9월 완결">70건</td>
+    <td class="num" data-l="하락거래">39%</td>
+    <td class="num" data-l="소진">7.8개월</td>
+  </tr><tr class="">
+    <td>죽전동</td>
+    <td class="num" data-l="매물">599</td>
+    <td class="num" data-l="7일">+1%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,9.1 5.625,15.9 11.25,22.0 16.875,21.2 22.5,14.4 28.125,11.4 33.75,8.3 39.375,5.3 45,5.3 50.625,6.1 56.25,5.3 61.875,9.1 67.5,4.6 73.125,0.0 78.75,4.6 84.375,7.6 90,0.8"/></svg></td>
+    <td class="num" data-l="10월 거래">93건</td>
+    <td class="num" data-l="9월 완결">48건</td>
+    <td class="num" data-l="하락거래">30%</td>
+    <td class="num" data-l="소진">7.9개월</td>
+  </tr><tr class="">
+    <td>동천동</td>
+    <td class="num" data-l="매물">474</td>
+    <td class="num" data-l="7일">+4.9%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,17.9 5.625,19.6 11.25,22.0 16.875,22.0 22.5,18.7 28.125,16.3 33.75,8.1 39.375,4.1 45,6.5 50.625,9.0 56.25,20.4 61.875,2.4 67.5,0.0 73.125,0.0 78.75,0.0 84.375,4.1 90,2.4"/></svg></td>
+    <td class="num" data-l="10월 거래">58건</td>
+    <td class="num" data-l="9월 완결">38건</td>
+    <td class="num" data-l="하락거래">47%</td>
+    <td class="num" data-l="소진">8.6개월</td>
+  </tr><tr class="">
+    <td>고기동</td>
+    <td class="num" data-l="매물">0</td>
+    <td class="num" data-l="7일">—</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,22.0 5.625,22.0 11.25,22.0 16.875,22.0 22.5,22.0 28.125,22.0 33.75,22.0 39.375,22.0 45,22.0 50.625,22.0 56.25,22.0 61.875,22.0 67.5,22.0 73.125,22.0 78.75,22.0 84.375,22.0 90,22.0"/></svg></td>
+    <td class="num" data-l="10월 거래">0건</td>
+    <td class="num" data-l="9월 완결">0건</td>
+    <td class="num" data-l="하락거래">—</td>
+    <td class="num" data-l="소진">—</td>
+  </tr><tr class="">
+    <td>신봉동</td>
+    <td class="num" data-l="매물">354</td>
+    <td class="num" data-l="7일">-0.8%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,0.0 5.625,9.3 11.25,13.9 16.875,12.7 22.5,8.1 28.125,5.8 33.75,9.3 39.375,5.8 45,6.9 50.625,10.4 56.25,18.5 61.875,6.9 67.5,9.3 73.125,9.3 78.75,13.9 84.375,19.7 90,22.0"/></svg></td>
+    <td class="num" data-l="10월 거래">32건</td>
+    <td class="num" data-l="9월 완결">31건</td>
+    <td class="num" data-l="하락거래">36%</td>
+    <td class="num" data-l="소진">9개월</td>
+  </tr><tr class="">
+    <td>성복동</td>
+    <td class="num" data-l="매물">710</td>
+    <td class="num" data-l="7일">+0.7%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,13.6 5.625,12.6 11.25,21.0 16.875,22.0 22.5,7.3 28.125,4.2 33.75,17.8 39.375,4.2 45,3.1 50.625,8.4 56.25,18.9 61.875,1.0 67.5,5.2 73.125,4.2 78.75,0.0 84.375,6.3 90,13.6"/></svg></td>
+    <td class="num" data-l="10월 거래">66건</td>
+    <td class="num" data-l="9월 완결">49건</td>
+    <td class="num" data-l="하락거래">37%</td>
+    <td class="num" data-l="소진">11개월</td>
+  </tr><tr class="">
+    <td>상현동</td>
+    <td class="num" data-l="매물">831</td>
+    <td class="num" data-l="7일">+6.5%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,16.5 5.625,18.8 11.25,22.0 16.875,20.4 22.5,13.3 28.125,10.0 33.75,11.3 39.375,10.4 45,14.2 50.625,17.5 56.25,17.8 61.875,2.9 67.5,3.9 73.125,1.9 78.75,0.0 84.375,2.6 90,1.3"/></svg></td>
+    <td class="num" data-l="10월 거래">90건</td>
+    <td class="num" data-l="9월 완결">65건</td>
+    <td class="num" data-l="하락거래">40%</td>
+    <td class="num" data-l="소진">7.7개월</td>
+  </tr>
+<tr class="grp"><td colspan="9">성남 — 관심 동만 (구 합계 없음)</td></tr><tr class="">
+    <td>신흥동</td>
+    <td class="num" data-l="매물">631</td>
+    <td class="num" data-l="7일">0%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,14.9 5.625,15.1 11.25,22.0 16.875,18.3 22.5,10.6 28.125,7.4 33.75,9.7 39.375,6.0 45,3.1 50.625,3.7 56.25,2.9 61.875,0.9 67.5,0.0 73.125,3.4 78.75,0.0 84.375,2.9 90,2.9"/></svg></td>
+    <td class="num" data-l="10월 거래">32건</td>
+    <td class="num" data-l="9월 완결">23건</td>
+    <td class="num" data-l="하락거래">48%</td>
+    <td class="num" data-l="소진">18.2개월</td>
+  </tr><tr class="">
+    <td>태평동</td>
+    <td class="num" data-l="매물">101</td>
+    <td class="num" data-l="7일">+4.1%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,7.3 5.625,11.0 11.25,20.2 16.875,5.5 22.5,0.0 28.125,9.2 33.75,18.3 39.375,11.0 45,5.5 50.625,5.5 56.25,22.0 61.875,14.7 67.5,12.8 73.125,7.3 78.75,14.7 84.375,20.2 90,14.7"/></svg></td>
+    <td class="num" data-l="10월 거래">5건</td>
+    <td class="num" data-l="9월 완결">12건</td>
+    <td class="num" data-l="하락거래">33%</td>
+    <td class="num" data-l="소진">12.1개월</td>
+  </tr><tr class="">
+    <td>수진동</td>
+    <td class="num" data-l="매물">31</td>
+    <td class="num" data-l="7일">-3.1%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,16.5 5.625,16.5 11.25,22.0 16.875,16.5 22.5,0.0 28.125,0.0 33.75,16.5 39.375,5.5 45,16.5 50.625,16.5 56.25,5.5 61.875,16.5 67.5,5.5 73.125,5.5 78.75,16.5 84.375,22.0 90,11.0"/></svg></td>
+    <td class="num" data-l="10월 거래">4건</td>
+    <td class="num" data-l="9월 완결">3건</td>
+    <td class="num" data-l="하락거래">0%</td>
+    <td class="num" data-l="소진">4.6개월</td>
+  </tr><tr class="">
+    <td>산성동</td>
+    <td class="num" data-l="매물">0</td>
+    <td class="num" data-l="7일">—</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,22.0 5.625,22.0 11.25,22.0 16.875,22.0 22.5,22.0 28.125,22.0 33.75,22.0 39.375,22.0 45,22.0 50.625,22.0 56.25,22.0 61.875,22.0 67.5,22.0 73.125,22.0 78.75,22.0 84.375,22.0 90,22.0"/></svg></td>
+    <td class="num" data-l="10월 거래">0건</td>
+    <td class="num" data-l="9월 완결">0건</td>
+    <td class="num" data-l="하락거래">—</td>
+    <td class="num" data-l="소진">—</td>
+  </tr><tr class="">
+    <td>고등동</td>
+    <td class="num" data-l="매물">104</td>
+    <td class="num" data-l="7일">+1%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,6.3 5.625,12.6 11.25,18.9 16.875,22.0 22.5,18.9 28.125,12.6 33.75,12.6 39.375,6.3 45,12.6 50.625,12.6 56.25,6.3 61.875,3.1 67.5,0.0 73.125,0.0 78.75,0.0 84.375,6.3 90,3.1"/></svg></td>
+    <td class="num" data-l="10월 거래">13건</td>
+    <td class="num" data-l="9월 완결">7건</td>
+    <td class="num" data-l="하락거래">43%</td>
+    <td class="num" data-l="소진">11.6개월</td>
+  </tr><tr class="">
+    <td>금광동</td>
+    <td class="num" data-l="매물">360</td>
+    <td class="num" data-l="7일">+2.3%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,18.5 5.625,20.2 11.25,22.0 16.875,16.7 22.5,7.9 28.125,20.2 33.75,16.7 39.375,3.5 45,4.4 50.625,7.9 56.25,7.0 61.875,6.2 67.5,4.4 73.125,2.6 78.75,0.9 84.375,2.6 90,0.0"/></svg></td>
+    <td class="num" data-l="10월 거래">17건</td>
+    <td class="num" data-l="9월 완결">23건</td>
+    <td class="num" data-l="하락거래">48%</td>
+    <td class="num" data-l="소진">11개월</td>
+  </tr><tr class="">
+    <td>도촌동</td>
+    <td class="num" data-l="매물">76</td>
+    <td class="num" data-l="7일">+4.1%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,22.0 5.625,18.0 11.25,18.0 16.875,20.0 22.5,14.0 28.125,16.0 33.75,8.0 39.375,8.0 45,8.0 50.625,8.0 56.25,6.0 61.875,4.0 67.5,6.0 73.125,6.0 78.75,8.0 84.375,10.0 90,0.0"/></svg></td>
+    <td class="num" data-l="10월 거래">7건</td>
+    <td class="num" data-l="9월 완결">11건</td>
+    <td class="num" data-l="하락거래">36%</td>
+    <td class="num" data-l="소진">10.4개월</td>
+  </tr><tr class="">
+    <td>하대원동</td>
+    <td class="num" data-l="매물">137</td>
+    <td class="num" data-l="7일">+17.1%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,11.9 5.625,16.5 11.25,22.0 16.875,11.9 22.5,10.1 28.125,10.1 33.75,12.8 39.375,19.3 45,19.3 50.625,19.3 56.25,19.3 61.875,1.8 67.5,2.8 73.125,0.0 78.75,3.7 84.375,3.7 90,0.9"/></svg></td>
+    <td class="num" data-l="10월 거래">9건</td>
+    <td class="num" data-l="9월 완결">12건</td>
+    <td class="num" data-l="하락거래">55%</td>
+    <td class="num" data-l="소진">11.1개월</td>
+  </tr><tr class="">
+    <td>중앙동</td>
+    <td class="num" data-l="매물">152</td>
+    <td class="num" data-l="7일">+4.1%</td>
+    <td class="num" data-l="30일">—</td>
+    <td data-l="30일 추이"><svg class="spark flat" viewBox="0 0 90 22" width="90" height="22" aria-hidden="true"><polyline points="0,19.4 5.625,18.1 11.25,22.0 16.875,14.2 22.5,11.6 28.125,11.6 33.75,11.6 39.375,6.5 45,9.1 50.625,11.6 56.25,12.9 61.875,6.5 67.5,1.3 73.125,2.6 78.75,0.0 84.375,9.1 90,5.2"/></svg></td>
+    <td class="num" data-l="10월 거래">7건</td>
+    <td class="num" data-l="9월 완결">14건</td>
+    <td class="num" data-l="하락거래">21%</td>
+    <td class="num" data-l="소진">9.5개월</td>
+  </tr></tbody></table></div>
 
+<div class="note">매물 = 네이버 매매 매물(동일매물 묶음, 아파트·재건축, 모든 평형). 거래 = 국토부 실거래, 계약일 기준, 해제 제외.
+계약 후 30일 신고 기한이 지나지 않은 달은 잠정이다. 이번 달 누적은 월초에 0에 가까워 표에서 뺐다.
+소진 = 매물 ÷ 최근 완결 3개월(9월·8월·7월) 월평균 거래. 하락거래 = 9월 거래 중 같은 단지·같은 면적의 직전 거래보다 낮은 비율.</div>
+</details>
 
 <div class="foot">
 출처 네이버 부동산 (전 페이지 수집) · 호가는 체결가가 아니다 · 같은 물건이 여러 부동산에 등록되면 중복 집계된다 · 세 안고·잔여임대 매물은 흐리게 표시(실거주 불가)<br>
